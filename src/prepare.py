@@ -44,10 +44,9 @@ def write_pairs(split_df, output_path, seed):
             texts = group["text"].tolist()
             if len(texts) < 2:
                 continue
-            for text in texts:
-                idx = rng.integers(0, len(texts))
-                while texts[idx] == text:
-                    idx = rng.integers(0, len(texts))
+            for i, text in enumerate(texts):
+                other_indices = [j for j in range(len(texts)) if j != i]
+                idx = rng.choice(other_indices)
                 writer.writerow([text, texts[idx]])
                 pair_count += 1
     print(f"Wrote {pair_count} pairs to {output_path}")

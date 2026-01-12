@@ -25,7 +25,7 @@ from utils.check_cuda import check_cuda_and_gpus
 def build_retrieval_evaluator(df):
     df = df.reset_index(drop=True)
     corpus = {str(i): row.text for i, row in df.iterrows()}
-    grouped = df.groupby("nkv_group").apply(lambda x: list(x.index))
+    grouped = df.groupby("nkv_group").apply(lambda x: list(x.index), include_groups=False)
 
     queries = {}
     relevant_docs = {}
