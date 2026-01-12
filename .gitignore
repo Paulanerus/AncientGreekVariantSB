@@ -1,6 +1,6 @@
 # Data files
 data/*.csv
-data/pairs/*.csv
+data/processed/*.csv
 *.tar.xz
 
 # Byte-compiled / optimized / DLL files
