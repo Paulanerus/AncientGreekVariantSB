@@ -25,7 +25,9 @@ from utils.check_cuda import check_cuda_and_gpus
 def build_retrieval_evaluator(df):
     df = df.reset_index(drop=True)
     corpus = {str(i): row.text for i, row in df.iterrows()}
-    grouped = df.groupby("nkv_group").apply(lambda x: list(x.index), include_groups=False)
+    grouped = df.groupby("nkv_group").apply(
+        lambda x: list(x.index), include_groups=False
+    )
 
     queries = {}
     relevant_docs = {}
@@ -84,12 +86,12 @@ model.fit(
     warmup_steps=warmup_steps,
     optimizer_params={"lr": LEARNING_RATE},
     output_path=MODEL_DIR,
+    save_best_model=True,
     show_progress_bar=True,
 )
+
+model = SentenceTransformer(MODEL_DIR, device=device)
 
 total_steps = len(train_loader) * EPOCHS
 score = eval_evaluator(model, output_path=None, epoch=EPOCHS, steps=total_steps)
 print(f"Eval score: {score}")
-
-model.save(MODEL_DIR, safe_serialization=True)
-print(f"Saved model to {MODEL_DIR}")
