@@ -1,4 +1,5 @@
 # Data files
+bench/
 data/*.csv
 data/processed/*.csv
 *.tar.xz
