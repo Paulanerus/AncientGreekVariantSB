@@ -1,4 +1,5 @@
 # Data files
+model/
 bench/
 data/*.csv
 data/processed/*.csv
