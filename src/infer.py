@@ -24,7 +24,7 @@ ysent_norm = [strip_accents_and_lowercase(s) for s in ysent]
 device = check_cuda_and_gpus()
 print(f"Device: {device}")
 
-model = SentenceTransformer(MODEL_DIR, device=device)
+model = SentenceTransformer("Paulanerus/AncientGreekVariantSBERT", device=device)
 
 x_embeddings = model.encode(xsent_norm, convert_to_tensor=True)
 y_embeddings = model.encode(ysent_norm, convert_to_tensor=True)
