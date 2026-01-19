@@ -9,7 +9,7 @@ It produces 768‑dimensional sentence embeddings (SentenceTransformers) that wo
 
 Base model: [`pranaydeeps/Ancient-Greek-BERT`](https://huggingface.co/pranaydeeps/Ancient-Greek-BERT)
 
-Model on Hugging Face: `https://huggingface.co/Paulanerus/AncientGreekVariantSBERT`
+Model on Hugging Face: [Paulanerus/AncientGreekVariantSBERT](https://huggingface.co/Paulanerus/AncientGreekVariantSBERT)
 
 ---
 
