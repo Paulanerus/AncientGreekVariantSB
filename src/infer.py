@@ -1,6 +1,5 @@
 from sentence_transformers import SentenceTransformer, util
 
-from config import MODEL_DIR
 from utils.check_cuda import check_cuda_and_gpus
 from utils.string_norm import strip_accents_and_lowercase
 
