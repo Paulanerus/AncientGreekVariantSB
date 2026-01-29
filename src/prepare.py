@@ -5,16 +5,33 @@ import numpy as np
 import pandas as pd
 
 from config import (
-    DATA_INPUT,
     DEV_PAIRS,
     DEV_RATIO,
     EVAL_PAIRS,
     PROCESSED_DIR,
+    RAW_VERSES,
     SEED,
+    TEMP_VERSES,
     TRAIN_PAIRS,
     TRAIN_RATIO,
 )
 from utils.string_norm import strip_accents_and_lowercase
+
+
+def build_temp_verses(raw_path, output_path):
+    df = pd.read_csv(raw_path, usecols=["verse_id", "text", "nkv"])
+    df = df.drop_duplicates(subset=["verse_id", "text", "nkv"])
+    nkv_values = df["nkv"]
+    nkv_order = pd.Series(nkv_values.dropna().unique()).sort_values(kind="mergesort")
+    nkv_codes = pd.Categorical(nkv_values, categories=nkv_order, ordered=True).codes
+    nkv_group = pd.Series(nkv_codes, index=df.index)
+
+    if (nkv_group < 0).any():
+        nkv_group = nkv_group.mask(nkv_group < 0, len(nkv_order))
+
+    df = df.assign(nkv_group=nkv_group.astype(int))
+    df = df[["verse_id", "text", "nkv_group"]].sort_values("verse_id", kind="mergesort")
+    df.to_csv(output_path, index=False)
 
 
 def split_groups(groups, train_ratio, dev_ratio, seed):
@@ -52,8 +69,13 @@ def write_pairs(split_df, output_path, seed):
     print(f"Wrote {pair_count} pairs to {output_path}")
 
 
-print(f"Loading data from {DATA_INPUT}")
-df = pd.read_csv(DATA_INPUT)
+print(f"Generating data from {RAW_VERSES}")
+build_temp_verses(RAW_VERSES, TEMP_VERSES)
+
+print(f"Wrote {TEMP_VERSES}")
+print(f"Loading data from {TEMP_VERSES}")
+
+df = pd.read_csv(TEMP_VERSES)
 df = df.dropna(subset=["text", "nkv_group"])
 print(f"Rows after dropna: {len(df)}")
 

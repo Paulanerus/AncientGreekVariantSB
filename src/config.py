@@ -1,4 +1,6 @@
-DATA_INPUT = "data/verses.csv"
+DATA_DIR = "data"
+RAW_VERSES = f"{DATA_DIR}/verses.csv"
+TEMP_VERSES = f"{DATA_DIR}/temp_verses.csv"
 PROCESSED_DIR = "data/processed"
 
 TRAIN_DATA = f"{PROCESSED_DIR}/train.csv"
