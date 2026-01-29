@@ -72,7 +72,7 @@ This creates an intermediate (cleaned/normalized) dataset and then generates the
 
 - `verse_id`: verse identifier (used for stable ordering + de-duplication)
 - `text`: the verse text
-- `nkv`: "Verse Identifier by NKV Scheme" (used as the grouping key indicating which verses belong to the same underlying verse)
+- `nkv`: verse identifier by NKV scheme (used as the grouping key indicating which verses belong to the same underlying verse)
 
 It first generates `data/temp_verses.csv` (see `TEMP_VERSES` in `src/config.py`) where `nkv` is converted to an integer `nkv_group`.
 
