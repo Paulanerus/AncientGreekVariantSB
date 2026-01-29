@@ -60,7 +60,7 @@ You can then use `run.sh`:
 
 ### Dataset
 
-Download `verses.csv` from [Zenodo](https://zenodo.org/records/15789063).
+Download `verses.csv` from **Version 4** (released **July 2, 2025**) of this [Zenodo](https://zenodo.org/records/15789063) dataset.
 
 1. Download `verses.csv`
 2. Place it in `data/` (path: `data/verses.csv`)
@@ -87,6 +87,14 @@ What it does:
 
 Important: **running `prepare` is required** before training, because `train.py` reads the prepared pairs/splits.
 
+### Pair generation (positives only)
+
+The generated `*_pairs.csv` files contain **only positive pairs**: both sentences come from the same `nkv_group` (i.e., they are variants of the same underlying verse). For each verse text in a group, `prepare.py` samples **one** other text from that same group to form a pair.
+
+No explicit negative pairs are written. During training, `MultipleNegativesRankingLoss` uses **in-batch negatives**: for a given anchor sentence, the other sentences in the batch are treated as negatives.
+
+For dev/eval, the `InformationRetrievalEvaluator` is built from the split CSVs: it treats items with the same `nkv_group` as relevant documents for a query.
+
 ---
 
 ## Training (`src/train.py`)
@@ -97,6 +105,8 @@ Training uses SentenceTransformers with:
 - **Evaluator**: `InformationRetrievalEvaluator` built from the dev/eval splits
 - **Normalization**: performed in `prepare.py` (accent stripping + lowercase)
 - **Saving**: `save_best_model=True`
+
+Training/data configuration (paths, split ratios, batch size, epochs, LR, etc.) lives in `src/config.py`.
 
 Hardware note: training for the released model was run on **a single NVIDIA A100 80GB PCIe**.
 
