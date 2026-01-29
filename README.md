@@ -127,7 +127,7 @@ If you use this model, please cite it as a model release:
   author = {Fröhlich, Paul},
   title = {Ancient Greek Variant SBERT: Fine-tuned Embeddings for Biblical text verses in Ancient Greek},
   year = {2026},
-  howpublished = {\\url{https://huggingface.co/Paulanerus/AncientGreekVariantSBERT}},
+  howpublished = {\url{https://huggingface.co/Paulanerus/AncientGreekVariantSBERT}},
   note = {Model release}
 }
 ```
@@ -140,3 +140,5 @@ This work builds on:
 
 - [`pranaydeeps/Ancient-Greek-BERT`](https://huggingface.co/pranaydeeps/Ancient-Greek-BERT) (Singh, Rutten, and Lefever, 2021)
 - the SentenceTransformers ecosystem: https://www.sbert.net
+
+This work was funded by the Deutsche Forschungsgemeinschaft (DFG, German Research Foundation) 513300936.
