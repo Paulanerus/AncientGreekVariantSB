@@ -58,22 +58,34 @@ You can then use `run.sh`:
 
 ## Data preparation (`src/prepare.py`)
 
-`prepare.py` expects a CSV at the path configured in `src/config.py` (`DATA_INPUT`, default `data/verses.csv`) with at least:
+### Dataset
 
+Download `verses.csv` from [Zenodo](https://zenodo.org/records/15789063).
+
+1. Download `verses.csv`
+2. Place it in `data/` (path: `data/verses.csv`)
+3. Run `./run.sh prepare`
+
+This creates an intermediate (cleaned/normalized) dataset and then generates the train/dev/eval splits and training pairs used for training.
+
+`prepare.py` reads the raw verses CSV configured in `src/config.py` (`RAW_VERSES`, default `data/verses.csv`) with these columns:
+
+- `verse_id`: verse identifier (used for stable ordering + de-duplication)
 - `text`: the verse text
-- `nkv_group`: a group id indicating which verses are variants of the same underlying verse
+- `nkv`: "Verse Identifier by NKV Scheme" (used as the grouping key indicating which verses belong to the same underlying verse)
+
+It first generates `data/temp_verses.csv` (see `TEMP_VERSES` in `src/config.py`) where `nkv` is converted to an integer `nkv_group`.
 
 What it does:
 
-1. Drops rows with missing `text` / `nkv_group`
-2. Normalizes `text` (accent-stripping + lowercasing)
-3. Removes groups with fewer than 2 samples
-4. Splits by **group id** into train/dev/eval (defaults: 95% / 2.5% / 2.5%)
-5. Writes split CSVs and also generates training pairs (`train_pairs.csv`, etc.)
+1. Reads `data/verses.csv`, de-duplicates rows, and writes `data/temp_verses.csv`
+2. Drops rows with missing `text` / `nkv_group`
+3. Normalizes `text` (accent-stripping + lowercasing)
+4. Removes groups with fewer than 2 samples
+5. Splits by **group id** into train/dev/eval (defaults: 95% / 2.5% / 2.5%)
+6. Writes split CSVs (`data/processed/{train,dev,eval}.csv`) and also generates training pairs (`data/processed/{train,dev,eval}_pairs.csv`)
 
 Important: **running `prepare` is required** before training, because `train.py` reads the prepared pairs/splits.
-
-> Data note: the dataset is not provided in this repo at the moment. The preparation pipeline is included so you can reproduce the splits/pairs once the data (or a public equivalent) is available.
 
 ---
 
