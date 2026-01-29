@@ -1,6 +1,6 @@
 # Ancient Greek Variant SBERT
 
-An embedding model for **Ancient Greek biblical verse similarity** and **variant clustering**.  
+An embedding model for Ancient Greek biblical verse similarity and variant clustering.  
 It produces 768‑dimensional sentence embeddings (SentenceTransformers) that work well for:
 
 - semantic similarity / duplicate & near-duplicate detection
@@ -17,9 +17,9 @@ Model on Hugging Face: [Paulanerus/AncientGreekVariantSBERT](https://huggingface
 
 This repo contains:
 
-- a **data preparation pipeline** (`src/prepare.py`) that builds train/dev/eval splits and training pairs
-- a **training script** (`src/train.py`) using `MultipleNegativesRankingLoss`
-- a small **inference script** (`src/infer.py`) that prints cosine similarities for sentence pairs
+- a data preparation pipeline (`src/prepare.py`) that builds train/dev/eval splits and training pairs
+- a training script (`src/train.py`) using `MultipleNegativesRankingLoss`
+- a small inference script (`src/infer.py`) that prints cosine similarities for sentence pairs
 - a convenience entrypoint script `run.sh`
 
 ---
@@ -60,7 +60,7 @@ You can then use `run.sh`:
 
 ### Dataset
 
-Download `verses.csv` from **Version 4** (released **July 2, 2025**) of this [Zenodo](https://zenodo.org/records/15789063) dataset.
+Download `verses.csv` from Version 4 (released July 2, 2025) of this [Zenodo](https://zenodo.org/records/15789063) dataset.
 
 1. Download `verses.csv`
 2. Place it in `data/` (path: `data/verses.csv`)
@@ -82,16 +82,16 @@ What it does:
 2. Drops rows with missing `text` / `nkv_group`
 3. Normalizes `text` (accent-stripping + lowercasing)
 4. Removes groups with fewer than 2 samples
-5. Splits by **group id** into train/dev/eval (defaults: 95% / 2.5% / 2.5%)
+5. Splits by group id into train/dev/eval (defaults: 95% / 2.5% / 2.5%)
 6. Writes split CSVs (`data/processed/{train,dev,eval}.csv`) and also generates training pairs (`data/processed/{train,dev,eval}_pairs.csv`)
 
 Important: **running `prepare` is required** before training, because `train.py` reads the prepared pairs/splits.
 
 ### Pair generation (positives only)
 
-The generated `*_pairs.csv` files contain **only positive pairs**: both sentences come from the same `nkv_group` (i.e., they are variants of the same underlying verse). For each verse text in a group, `prepare.py` samples **one** other text from that same group to form a pair.
+The generated `*_pairs.csv` files contain only positive pairs: both sentences come from the same `nkv_group` (i.e., they are variants of the same underlying verse). For each verse text in a group, `prepare.py` samples one other text from that same group to form a pair.
 
-No explicit negative pairs are written. During training, `MultipleNegativesRankingLoss` uses **in-batch negatives**: for a given anchor sentence, the other sentences in the batch are treated as negatives.
+No explicit negative pairs are written. During training, `MultipleNegativesRankingLoss` uses in-batch negatives: for a given anchor sentence, the other sentences in the batch are treated as negatives.
 
 For dev/eval, the `InformationRetrievalEvaluator` is built from the split CSVs: it treats items with the same `nkv_group` as relevant documents for a query.
 
@@ -108,7 +108,7 @@ Training uses SentenceTransformers with:
 
 Training/data configuration (paths, split ratios, batch size, epochs, LR, etc.) lives in `src/config.py`.
 
-Hardware note: training for the released model was run on **a single NVIDIA A100 80GB PCIe**.
+Hardware note: training for the released model was run on a single NVIDIA A100 80GB PCIe.
 
 Run:
 
